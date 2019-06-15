@@ -1,4 +1,6 @@
 
+[![CircleCI](https://circleci.com/gh/cyber-dojo-languages/image_dockerfile_augmenter.svg?style=svg)](https://circleci.com/gh/cyber-dojo-languages/image_dockerfile_augmenter)
+
 Use cyberdojofoundation/image_dockerfile_augmenter to create images from the
 cyber-dojo-languages Dockerfiles.
 The Dockerfiles **cannot** be used to build a (working) docker image with a
