@@ -22,7 +22,7 @@ assert_equals()
   if [ "${expected}" != "${actual}" ]; then
     echo "expected: ${expected}"
     echo "  actual: ${actual}"
-    echo 'FAILED'
+    echo 'assert_equals() FAILED'
     exit 3
   fi
 }
