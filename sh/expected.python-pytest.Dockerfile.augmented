@@ -1,4 +1,4 @@
-FROM  cyberdojofoundation/python
+FROM cyberdojofoundation/python
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # START of extra commands to fulfil runner's requirements (os=Debian)

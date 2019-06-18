@@ -1,4 +1,4 @@
-FROM  python
+FROM python
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # START of extra commands to fulfil runner's requirements (os=Debian)
