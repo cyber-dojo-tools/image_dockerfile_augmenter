@@ -1,5 +1,5 @@
 
-[![CircleCI](https://circleci.com/gh/cyber-dojo-languages/image_dockerfile_augmenter.svg?style=svg)](https://circleci.com/gh/cyber-dojo-languages/image_dockerfile_augmenter)
+[![CircleCI](https://circleci.com/gh/cyber-dojo-tools/image_dockerfile_augmenter.svg?style=svg)](https://circleci.com/gh/cyber-dojo-tools/image_dockerfile_augmenter)
 
 - given a Dockerfile, creates a new Dockerfile, augmented to fulfil [runner's](https://github.com/cyber-dojo/runner) requirements:
   - adds a Linux user called sandbox
@@ -8,18 +8,18 @@
   - on Alpine it installs coreutils so file stamp granularity is in microseconds
   - on Alpine it installs file to allow (file --mime-encoding ${filename})
   - on Alpine it updates tar to support the --touch option
-- used in the main [build_test_push_notify.sh](https://github.com/cyber-dojo-languages/image_builder/blob/master/build_test_push_notify.sh) script of all [cyber-dojo-languages](https://github.com/cyber-dojo-languages) repos .circleci/config.yml files
+- used in the main [image_build_test_push_notify.sh](https://github.com/cyber-dojo-tools/image_builder/blob/master/image_build_test_push_notify.sh) script of all [cyber-dojo-languages](https://github.com/cyber-dojo-languages) repos .circleci/config.yml files
 
 ```bash
 $ git clone https://github.com/cyber-dojo-languages/python-pytest.git
 $ cd python-pytest
-$ cat /docker/Dockerfile
-FROM  cyberdojofoundation/python
+$ cat /docker/Dockerfile.base
+FROM cyberdojofoundation/python
 LABEL maintainer=jon@jaggersoft.com
 RUN pip3 install --upgrade pytest coverage
 COPY red_amber_green.rb /usr/local/bin
 
-$ cat docker/Dockerfile \
+$ cat docker/Dockerfile.base \
     | \
       docker run \
         --interactive \
@@ -27,7 +27,7 @@ $ cat docker/Dockerfile \
         --volume /var/run/docker.sock:/var/run/docker.sock \
           cyberdojofoundation/image_dockerfile_augmenter
 
-FROM  cyberdojofoundation/python
+FROM cyberdojofoundation/python
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # START of extra commands to fulfil runner's requirements (os=Debian)
 RUN (getent group sandbox) || (addgroup --gid 51966 sandbox)
