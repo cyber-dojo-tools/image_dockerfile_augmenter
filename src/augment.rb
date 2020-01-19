@@ -2,6 +2,7 @@
 # reads a Dockerfile on stdin and
 # writes a Dockerfile on stdout
 # augmented to fulful runner's requirements.
+# https://github.com/cyber-dojo/runner
 
 # - - - - - - - - - - - - - - - - -
 
