@@ -35,7 +35,7 @@ dockerfile_augmenter()
         --interactive \
         --rm \
         --volume /var/run/docker.sock:/var/run/docker.sock \
-        cyberdojotools/image_dockerfile_augmenter
+        cyberdojofoundation/image_dockerfile_augmenter
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
