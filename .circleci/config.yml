@@ -1,32 +1,19 @@
 version: 2
 jobs:
-  build-publish-trigger:
-
+  build-publish:
     machine:
-      enabled: true
-
-    working_directory: ~/repo
-
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
       - run:
-          name: Build and test
-          command: |
-            set -e
-            ./pipe_build_up_test.sh
-      - run:
-          name: Publish on dockerhub
-          command: |
-            set -e
-            echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-            docker push cyberdojofoundation/image_dockerfile_augmenter:latest
+          name: Build, test, publish
+          command: ./pipe_build_up_test.sh
 
 workflows:
   version: 2
-  build-publish-trigger:
+  build-publish-deploy:
     jobs:
-      - build-publish-trigger:
+      - build-publish:
           filters:
             branches:
-              only:
-                  - master
+              only: [ master ]

@@ -1,6 +1,7 @@
 #!/bin/bash -Eeu
 
-readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+readonly SH_DIR="$( cd "$( dirname "${0}" )/sh" && pwd )"
 
-"${ROOT_DIR}/sh/build_image.sh"
-"${ROOT_DIR}/sh/test_image.sh"
+"${SH_DIR}/build_image.sh"
+"${SH_DIR}/test_image.sh"
+"${SH_DIR}/on_ci_publish_image.sh"
