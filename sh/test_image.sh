@@ -45,9 +45,9 @@ check_base_language_repo()
   cd ${TMP_DIR}
   git clone https://github.com/cyber-dojo-languages/python.git
   cd python
-  EXPECTED=$(cat "${MY_DIR}/expected.python.Dockerfile.augmented")
-  ACTUAL=$(dockerfile_augmenter)
-  assert_equals "${EXPECTED}" "${ACTUAL}"
+  local -r expected=$(cat "${MY_DIR}/expected.python.Dockerfile.augmented")
+  local -r actual=$(dockerfile_augmenter)
+  assert_equals "${expected}" "${actual}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,9 +57,9 @@ check_test_framework_repo()
   cd ${TMP_DIR}
   git clone https://github.com/cyber-dojo-languages/python-pytest.git
   cd python-pytest
-  EXPECTED=$(cat "${MY_DIR}/expected.python-pytest.Dockerfile.augmented")
-  ACTUAL=$(dockerfile_augmenter)
-  assert_equals "${EXPECTED}" "${ACTUAL}"
+  local -r expected=$(cat "${MY_DIR}/expected.python-pytest.Dockerfile.augmented")
+  local -r actual=$(dockerfile_augmenter)
+  assert_equals "${expected}" "${actual}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
