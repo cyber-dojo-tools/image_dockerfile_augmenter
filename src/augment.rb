@@ -93,7 +93,7 @@ end
 def install_runner_dependencies
   [ add_sandbox_group,
     add_sandbox_user,
-    install(coreutils,bash,tar,file)
+    install(coreutils,bash,tar,file,jq)
   ]
 end
 
@@ -162,6 +162,18 @@ def file
   # test-framework container. It does this using
   # $ file --mime-encoding ${filename}
   'file'
+end
+
+# - - - - - - - - - - - - - - - - -
+
+def jq
+  # An implementation of how to run cyber-dojo.sh
+  # could save stdout/stderr/status to separate
+  # files and then return them all inside a JSON string.
+  # The generated text files could then be added to
+  # the JSON string. This would remove the need to
+  # run a second [docker exec]
+  'jq'
 end
 
 # - - - - - - - - - - - - - - - - -
