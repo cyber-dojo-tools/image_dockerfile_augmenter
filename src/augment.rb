@@ -1,5 +1,5 @@
 
-# reads a Dockerfile on stdin and
+# reads a Dockerfile.base on stdin and
 # writes a Dockerfile on stdout
 # augmented to fulful runner's requirements.
 # https://github.com/cyber-dojo/runner
@@ -41,7 +41,7 @@ end
 # - - - - - - - - - - - - - - - - -
 
 def add_sandbox_group
-  # Must be idempotent because Dockerfile could be
+  # Must be idempotent because Dockerfile.base could be
   # based on a docker-image which _already_ has been
   # through image-builder processing
   name = 'sandbox'
@@ -58,7 +58,7 @@ end
 # - - - - - - - - - - - - - - - - -
 
 def add_sandbox_user
-  # Must be idempotent because Dockerfile could be
+  # Must be idempotent because Dockerfile.base could be
   # based on a docker-image which _already_ has been
   # through image-builder processing
   home_dir = '/home/sandbox'
