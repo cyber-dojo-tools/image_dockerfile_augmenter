@@ -93,7 +93,7 @@ end
 def install_runner_dependencies
   [ add_sandbox_group,
     add_sandbox_user,
-    install(coreutils,bash,tar,file,jq)
+    install(coreutils,bash,tar,file,jq,findutils)
   ]
 end
 
@@ -167,13 +167,15 @@ end
 # - - - - - - - - - - - - - - - - -
 
 def jq
-  # An implementation of how to run cyber-dojo.sh
-  # could save stdout/stderr/status to separate
-  # files and then return them all inside a JSON string.
-  # The generated text files could then be added to
-  # the JSON string. This would remove the need to
-  # run a second [docker exec]
+  # Runner now returns cyber-dojo.sh's stdout/stderr/status
+  # via a json file.
   'jq'
+end
+
+def findutils
+  # Runner is heading towards a jq solution that will require
+  # xargs options that you only get on default Alpine.
+  'findutils'
 end
 
 # - - - - - - - - - - - - - - - - -
