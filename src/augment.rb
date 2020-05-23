@@ -93,7 +93,7 @@ end
 def install_runner_dependencies
   [ add_sandbox_group,
     add_sandbox_user,
-    install(coreutils,bash,tar,file,jq,findutils)
+    install(coreutils,bash,tar,file)
   ]
 end
 
@@ -162,20 +162,6 @@ def file
   # test-framework container. It does this using
   # $ file --mime-encoding ${filename}
   'file'
-end
-
-# - - - - - - - - - - - - - - - - -
-
-def jq
-  # Runner now returns cyber-dojo.sh's stdout/stderr/status
-  # via a json file.
-  'jq'
-end
-
-def findutils
-  # Runner is heading towards a jq solution that will require
-  # xargs options that you only get on default Alpine.
-  'findutils'
 end
 
 # - - - - - - - - - - - - - - - - -
