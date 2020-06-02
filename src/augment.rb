@@ -234,6 +234,15 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+def commit_sha_env_var
+  [
+    'ARG COMMIT_SHA',
+    'ENV SHA=${COMMIT_SHA}'
+  ]
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 def banner_end
   [
     "# END of extra commands to fulfil runner's requirements",
@@ -260,6 +269,7 @@ parts << warn_generated
 parts << from
 parts << banner_start
 parts << install_runner_dependencies
+parts << commit_sha_env_var
 parts << banner_end
 parts << body
 
