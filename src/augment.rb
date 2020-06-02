@@ -234,10 +234,10 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def commit_sha_env_var
+def env_vars
   [
-    'ARG COMMIT_SHA',
-    'ENV SHA=${COMMIT_SHA}'
+    'ARG GIT_COMMIT_SHA',
+    'ENV SHA=${GIT_COMMIT_SHA}'
   ]
 end
 
@@ -269,7 +269,7 @@ parts << warn_generated
 parts << from
 parts << banner_start
 parts << install_runner_dependencies
-parts << commit_sha_env_var
+parts << env_vars
 parts << banner_end
 parts << body
 
