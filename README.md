@@ -1,7 +1,7 @@
 
 [![CircleCI](https://circleci.com/gh/cyber-dojo-tools/image_dockerfile_augmenter.svg?style=svg)](https://circleci.com/gh/cyber-dojo-tools/image_dockerfile_augmenter)
 
-- given a Dockerfile, creates a new Dockerfile, augmented to fulfil [runner's](https://github.com/cyber-dojo/runner) requirements:
+- reads a Dockerfile on stdin, creates a new Dockerfile, augmented to fulfil [runner's](https://github.com/cyber-dojo/runner) requirements:
   - adds a Linux user called sandbox
   - adds a Linux group called sandbox
   - on Alpine it installs bash so every cyber-dojo.sh runs in the same shell
