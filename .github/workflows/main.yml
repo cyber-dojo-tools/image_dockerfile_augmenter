@@ -29,8 +29,8 @@ jobs:
       contents: write
     uses: cyber-dojo/reusable-actions-workflows/.github/workflows/kosli_build_test_push_dockerhub.yml@main
     secrets:
-      DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-      DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      DOCKER_PASS: ${{ secrets.DOCKER_FOUNDATION_PASS }}
+      DOCKER_USER: ${{ secrets.DOCKER_FOUNDATION_USER }}
       KOSLI_API_TOKEN: ${{ secrets.KOSLI_API_TOKEN }}
     with:
       BUILD_COMMAND: pipe_build_up_test.sh
