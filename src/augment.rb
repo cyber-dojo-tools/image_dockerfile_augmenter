@@ -38,6 +38,11 @@ def os
   # else failed...
 end
 
+def install_missing_adduser_command
+  # In Ubuntu 24.04 the adduser and addgroup perl script are no longer installed by default
+  "RUN command -v adduser || (apt-get update && apt-get install adduser)"
+end
+
 # - - - - - - - - - - - - - - - - -
 
 def add_sandbox_group
@@ -91,10 +96,14 @@ end
 # - - - - - - - - - - - - - - - - -
 
 def install_runner_dependencies
-  [ add_sandbox_group,
+  commands = [ add_sandbox_group,
     add_sandbox_user,
     install(coreutils,bash,tar,file)
   ]
+  if os == :Ubuntu
+    commands.unshift(install_missing_adduser_command)
+  end
+  commands
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
