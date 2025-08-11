@@ -1,4 +1,5 @@
-#!/bin/bash -Eeu
+#!/usr/bin/env bash
+set -Eeu
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 source "${MY_DIR}/image_name.sh"
@@ -11,6 +12,7 @@ on_ci_publish_tagged_images()
     return
   fi
   echo 'on CI so publishing image'
+  echo "${PACKAGES_TOKEN}" | docker login ghcr.io -u "${PACKAGES_USERNAME}" --password-stdin
   docker push "$(image_name)"
   docker logout
 }

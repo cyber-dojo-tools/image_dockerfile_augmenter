@@ -8,14 +8,9 @@ on:
 jobs:
   build-publish:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: write
-      attestations: write
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #PACKAGES_USERNAME: ${{ github.actor }}
-      #REPO_NAME: ${{ github.event.repository.name }}
+      PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PACKAGES_USERNAME: ${{ github.actor }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
