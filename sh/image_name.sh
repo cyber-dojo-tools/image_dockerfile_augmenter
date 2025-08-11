@@ -2,5 +2,5 @@
 
 image_name()
 {
-  echo cyberdojofoundation/image_dockerfile_augmenter
+  echo ghcr.io/cyber-dojo-tools/image_dockerfile_augmenter
 }
