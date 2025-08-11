@@ -8,7 +8,7 @@
   - on Alpine it installs coreutils so file stamp granularity is in microseconds
   - on Alpine it installs file to allow (file --mime-encoding ${filename})
   - on Alpine it updates tar to support the --touch option
-- used in the main [image_build_test_push_notify.sh](https://github.com/cyber-dojo-tools/image_builder/blob/master/image_build_test_push_notify.sh) script of all [cyber-dojo-languages](https://github.com/cyber-dojo-languages) repos .circleci/config.yml files
+- used in the main [image_build_test_push_notify.sh](https://github.com/cyber-dojo-tools/image_builder/blob/master/image_build_test_push_notify.sh) script of all [cyber-dojo-languages](https://github.com/cyber-dojo-languages) repos workflow files
 
 ```bash
 $ git clone https://github.com/cyber-dojo-languages/python-pytest.git
