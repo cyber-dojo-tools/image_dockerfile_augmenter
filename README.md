@@ -1,5 +1,5 @@
 
-[![Github Action (master)](https://github.com/cyber-dojo-tools/image_dockerfile_augmeter/actions/workflows/main.yml/badge.svg)](https://github.com/cyber-dojo-tools/image_dockerfile_augmeter/actions)
+[![Github Action (master)](https://github.com/cyber-dojo-tools/image_dockerfile_augmenter/actions/workflows/main.yml/badge.svg)](https://github.com/cyber-dojo-tools/image_dockerfile_augmenter/actions)
 
 - reads a Dockerfile on stdin, creates a new Dockerfile, augmented to fulfil [runner's](https://github.com/cyber-dojo/runner) requirements:
   - adds a Linux user called sandbox
