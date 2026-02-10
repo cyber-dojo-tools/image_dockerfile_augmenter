@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -Eeu
 
-readonly SH_DIR="$( cd "$( dirname "${0}" )/sh" && pwd )"
+readonly BIN_DIR="$( cd "$( dirname "${0}" )/bin" && pwd )"
 
-"${SH_DIR}/build_image.sh"
-"${SH_DIR}/test_image.sh"
-"${SH_DIR}/on_ci_publish_image.sh"
+"${BIN_DIR}/build_image.sh"
+"${BIN_DIR}/test_image.sh"
+"${BIN_DIR}/on_ci_publish_image.sh"

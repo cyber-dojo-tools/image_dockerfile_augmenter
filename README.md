@@ -1,7 +1,7 @@
 
 [![Github Action (master)](https://github.com/cyber-dojo-tools/image_dockerfile_augmenter/actions/workflows/main.yml/badge.svg)](https://github.com/cyber-dojo-tools/image_dockerfile_augmenter/actions)
 
-- reads a Dockerfile on stdin, creates a new Dockerfile, augmented to fulfil [runner's](https://github.com/cyber-dojo/runner) requirements:
+- reads a Dockerfile.base on stdin, creates a new Dockerfile, augmented to fulfil [runner's](https://github.com/cyber-dojo/runner) requirements:
   - adds a Linux user called sandbox
   - adds a Linux group called sandbox
   - on Alpine it installs bash so every cyber-dojo.sh runs in the same shell
@@ -10,11 +10,22 @@
   - on Alpine it updates tar to support the --touch option
 - used in the main [image_build_test_push_notify.sh](https://github.com/cyber-dojo-tools/image_builder/blob/master/image_build_test_push_notify.sh) script of all [cyber-dojo-languages](https://github.com/cyber-dojo-languages) repos workflow files
 
+
+The augmenter works with images based on Alpine, Debian, or Ubuntu.
+It detects the OS by looking for the file /etc/issue
+You can override the detection with a #comment in Dockerfile.base, eg
+```bash
+$ cat Dockerfile.base
+FROM dhi.io/dotnet:10-sdk-alpine3.22
+LABEL maintainer=jon@jaggersoft.com
+# OS=Alpine
+```
+
 ```bash
 $ git clone https://github.com/cyber-dojo-languages/python-pytest.git
 $ cd python-pytest
 $ cat /docker/Dockerfile.base
-FROM cyberdojofoundation/python
+FROM ghcr.io/cyber-dojo-languages/python:191902b
 LABEL maintainer=jon@jaggersoft.com
 RUN pip3 install --upgrade pytest
 COPY red_amber_green.rb /usr/local/bin
@@ -25,9 +36,9 @@ $ cat docker/Dockerfile.base \
         --interactive \
         --rm \
         --volume /var/run/docker.sock:/var/run/docker.sock \
-          cyberdojofoundation/image_dockerfile_augmenter
+          ghcr.io/cyber-dojo-tools/image_dockerfile_augmenter
 
-FROM cyberdojofoundation/python
+FROM ghcr.io/cyber-dojo-languages/python:191902b
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # START of extra commands to fulfil runner's requirements (os=Debian)
 RUN (getent group sandbox) || (addgroup --gid 51966 sandbox)
@@ -39,6 +50,8 @@ LABEL maintainer=jon@jaggersoft.com
 RUN pip3 install --upgrade pytest
 COPY red_amber_green.rb /usr/local/bin
 ```
+
+Note that the augmented RUN commands occur immediately after the FROM command.
 
 - - - -
 
