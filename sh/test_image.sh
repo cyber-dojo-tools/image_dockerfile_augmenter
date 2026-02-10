@@ -15,7 +15,17 @@ assert_equals()
 {
   local -r expected="${1}"
   local -r actual="${2}"
-  if [ "${expected}" != "${actual}" ]; then
+
+  if [ "${expected}" == "${actual}" ]; then
+    echo '--------------------------------------------'
+    echo expected
+    echo -n "${expected}" | head -5; echo ...
+    echo '--------------------------------------------'
+    echo actual
+    echo "${actual}" | head -5; echo ...
+    echo '--------------------------------------------'
+    echo PASSED
+  else
     echo '--------------------------------------------'
     echo expected
     echo "${expected}"
