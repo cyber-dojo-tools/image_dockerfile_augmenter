@@ -58,6 +58,11 @@ def install_missing_adduser_command
   "RUN command -v adduser || (apt-get update && apt-get install adduser)"
 end
 
+def install_getent_command 
+  # In some Alpine images there is no getent
+  "RUN (getent) || (apk add musl-utils)"
+end
+
 # - - - - - - - - - - - - - - - - -
 
 def add_sandbox_group
@@ -117,6 +122,9 @@ def install_runner_dependencies
   ]
   if os == :Ubuntu
     commands.unshift(install_missing_adduser_command)
+  end
+  if os == :Alpine
+    commands.unshift(install_getent_command)
   end
   commands
 end
