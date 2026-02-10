@@ -15,4 +15,4 @@ ENV SHA=${GIT_COMMIT_SHA}
 
 LABEL maintainer=jon@jaggersoft.com
 
-RUN pip3 install --upgrade pip numpy scipy panda datetime coverage pycodestyle
+RUN pip3 install --upgrade pip numpy scipy panda datetime coverage pycodestyle mypy
