@@ -25,7 +25,22 @@ end
 
 # - - - - - - - - - - - - - - - - -
 
+def explicit_os
+  os_line = dockerfile.lines.find { |line| line.start_with?('# OS=')}
+  if os_line
+    return os_line.split('=')[1].strip
+  else
+    return nil
+  end
+end
+
+# - - - - - - - - - - - - - - - - -
+
 def os
+  os = explicit_os
+  if os
+    return os.to_sym
+  end
   if etc_issue.include?('Alpine')
     return :Alpine
   end
