@@ -2,6 +2,7 @@
 set -Eeu
 
 readonly MY_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+source "${MY_DIR}/image_name.sh"
 # don't create TMP_DIR off /tmp because on Docker Toolbox
 # /tmp will not be available on the default VM
 readonly TMP=$(cd ${MY_DIR} && mktemp -d XXXXXX)
@@ -36,7 +37,7 @@ dockerfile_augmenter()
         --interactive \
         --rm \
         --volume /var/run/docker.sock:/var/run/docker.sock \
-        cyberdojofoundation/image_dockerfile_augmenter
+        "$(image_name)"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
