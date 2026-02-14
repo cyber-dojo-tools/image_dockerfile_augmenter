@@ -60,7 +60,9 @@ end
 
 def install_getent_command 
   # In some Alpine images there is no getent
-  "RUN (which getent) || (apk add musl-utils)"
+  [ "# ensure getent is installed",
+    "RUN apk add musl-utils"
+].join("\n") 
 end
 
 # - - - - - - - - - - - - - - - - -
@@ -68,7 +70,7 @@ end
 def add_sandbox_group
   # Must be idempotent because Dockerfile.base could be
   # based on a docker-image which _already_ has been
-  # through image-builder processing
+  # through this image-builder processing
   name = 'sandbox'
   gid = '51966'
   option = case os
@@ -85,7 +87,7 @@ end
 def add_sandbox_user
   # Must be idempotent because Dockerfile.base could be
   # based on a docker-image which _already_ has been
-  # through image-builder processing
+  # through this image-builder processing
   home_dir = '/home/sandbox'
   name = 'sandbox'
   shell = '/bin/bash'
@@ -172,7 +174,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def bash
-  # On Alpine install bash so runner can reply on
+  # On Alpine install bash so runner can rely on
   # all containers having bash.
   'bash'
 end
@@ -190,7 +192,7 @@ end
 # - - - - - - - - - - - - - - - - -
 
 def file
-  # Each runner docker-tar-pipes text files out of the
+  # The runner microservice docker-tar-pipes text files out of the
   # test-framework container. It does this using
   # $ file --mime-encoding ${filename}
   'file'
@@ -201,7 +203,7 @@ end
 def add_sandbox_group
   # Must be idempotent because Dockerfile could be
   # based on a docker-image which _already_ has been
-  # through image-builder processing
+  # through this image-builder processing
   name = 'sandbox'
   gid = '51966'
   option = case os
@@ -218,7 +220,7 @@ end
 def add_sandbox_user
   # Must be idempotent because Dockerfile could be
   # based on a docker-image which _already_ has been
-  # through image-builder processing
+  # through this image-builder processing
   home_dir = '/home/sandbox'
   name = 'sandbox'
   shell = '/bin/bash'
