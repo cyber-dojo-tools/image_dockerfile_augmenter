@@ -60,7 +60,7 @@ end
 
 def install_getent_command 
   # In some Alpine images there is no getent
-  "RUN (getent) || (apk add musl-utils)"
+  "RUN (which getent) || (apk add musl-utils)"
 end
 
 # - - - - - - - - - - - - - - - - -
