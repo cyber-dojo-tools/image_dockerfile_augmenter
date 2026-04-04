@@ -54,7 +54,7 @@ def os
 end
 
 def install_missing_adduser_command
-  # In Ubuntu 24.04 the adduser and addgroup perl script are no longer installed by default
+  # In Debian and Ubuntu 24.04 the adduser and addgroup perl script are no longer installed by default
   "RUN command -v adduser || (apt-get update && apt-get install adduser)"
 end
 
@@ -79,7 +79,8 @@ def add_sandbox_group
   end
   group_exists = "getent group #{name}"
   add_group = "addgroup #{option} #{gid} #{name}"
-  "RUN (#{group_exists}) || (#{add_group})"
+  group_add = "groupadd #{option} #{gid} #{name}"
+  "RUN (#{group_exists}) || (#{add_group}) || (#{group_add})"
 end
 
 # - - - - - - - - - - - - - - - - -
@@ -118,15 +119,16 @@ end
 # - - - - - - - - - - - - - - - - -
 
 def install_runner_dependencies
-  commands = [ add_sandbox_group,
+  commands = [ 
+    add_sandbox_group,
     add_sandbox_user,
     install(coreutils,bash,tar,file)
   ]
-  if os == :Ubuntu
-    commands.unshift(install_missing_adduser_command)
-  end
-  if os == :Alpine
+  case os
+  when :Alpine
     commands.unshift(install_getent_command)
+  when :Debian,:Ubuntu
+    commands.unshift(install_missing_adduser_command)
   end
   commands
 end
@@ -198,56 +200,6 @@ def file
   'file'
 end
 
-# - - - - - - - - - - - - - - - - -
-
-def add_sandbox_group
-  # Must be idempotent because Dockerfile could be
-  # based on a docker-image which _already_ has been
-  # through this image-builder processing
-  name = 'sandbox'
-  gid = '51966'
-  option = case os
-  when :Alpine         then '-g'
-  when :Debian,:Ubuntu then '--gid'
-  end
-  group_exists = "getent group #{name}"
-  add_group = "addgroup #{option} #{gid} #{name}"
-  "RUN (#{group_exists}) || (#{add_group})"
-end
-
-# - - - - - - - - - - - - - - - - -
-
-def add_sandbox_user
-  # Must be idempotent because Dockerfile could be
-  # based on a docker-image which _already_ has been
-  # through this image-builder processing
-  home_dir = '/home/sandbox'
-  name = 'sandbox'
-  shell = '/bin/bash'
-  uid = '41966'
-  options = case os
-  when :Alpine then [
-      '-D',                # --disabled-password
-      '-g ""',             # --gecos
-      "-h #{home_dir}",    # --home
-      "-G #{name}",        # --ingroup
-      "-s #{shell}",       # --shell
-      "-u #{uid}"          # --uid
-    ].join(' ')
-  when :Ubuntu, :Debian then [
-      '--disabled-password',
-      '--gecos ""',
-      "--home #{home_dir}",
-      "--ingroup #{name}",
-      "--shell #{shell}",
-      "--uid #{uid}"
-    ].join(' ')
-  end
-  user_exists = "grep -q #{name}:x:#{uid} /etc/passwd"
-  add_user = "adduser #{options} #{name}"
-  "RUN (#{user_exists}) || (#{add_user})"
-end
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def warn_generated
@@ -312,3 +264,56 @@ parts.each do |part|
    puts line
  end
 end
+
+
+
+# - - - - - - - - - - - - - - - - -
+
+# def X_add_sandbox_group
+#   # Must be idempotent because Dockerfile could be
+#   # based on a docker-image which _already_ has been
+#   # through this image-builder processing
+#   name = 'sandbox'
+#   gid = '51966'
+#   option = case os
+#   when :Alpine         then '-g'
+#   when :Debian,:Ubuntu then '--gid'
+#   end
+#   group_exists = "getent group #{name}"
+#   add_group = "addgroup #{option} #{gid} #{name}"
+#   "RUN (#{group_exists}) || (#{add_group})"
+# end
+
+# - - - - - - - - - - - - - - - - -
+
+# def X_add_sandbox_user
+#   # Must be idempotent because Dockerfile could be
+#   # based on a docker-image which _already_ has been
+#   # through this image-builder processing
+#   home_dir = '/home/sandbox'
+#   name = 'sandbox'
+#   shell = '/bin/bash'
+#   uid = '41966'
+#   options = case os
+#   when :Alpine then [
+#       '-D',                # --disabled-password
+#       '-g ""',             # --gecos
+#       "-h #{home_dir}",    # --home
+#       "-G #{name}",        # --ingroup
+#       "-s #{shell}",       # --shell
+#       "-u #{uid}"          # --uid
+#     ].join(' ')
+#   when :Ubuntu, :Debian then [
+#       '--disabled-password',
+#       '--gecos ""',
+#       "--home #{home_dir}",
+#       "--ingroup #{name}",
+#       "--shell #{shell}",
+#       "--uid #{uid}"
+#     ].join(' ')
+#   end
+#   user_exists = "grep -q #{name}:x:#{uid} /etc/passwd"
+#   add_user = "adduser #{options} #{name}"
+#   "RUN (#{user_exists}) || (#{add_user})"
+# end
+
