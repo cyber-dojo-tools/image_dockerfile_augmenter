@@ -3,28 +3,17 @@ set -Eeu
 
 readonly MY_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 source "${MY_DIR}/image_name.sh"
-# don't create TMP_DIR off /tmp because on Docker Toolbox
-# /tmp will not be available on the default VM
-readonly TMP=$(cd ${MY_DIR} && mktemp -d XXXXXX)
-readonly TMP_DIR=${MY_DIR}/${TMP}
-remove_tmp_dir() { rm -rf "${TMP_DIR}" > /dev/null; }
-trap remove_tmp_dir INT EXIT
+readonly FIXTURES_DIR="${MY_DIR}/fixtures"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 assert_equals()
 {
-  local -r expected="${1}"
-  local -r actual="${2}"
+  local -r name="${1}"
+  local -r expected="${2}"
+  local -r actual="${3}"
 
   if [ "${expected}" == "${actual}" ]; then
-    echo '--------------------------------------------'
-    echo expected
-    echo -n "${expected}" | head -5; echo ...
-    echo '--------------------------------------------'
-    echo actual
-    echo "${actual}" | head -5; echo ...
-    echo '--------------------------------------------'
-    echo PASSED
+    echo "PASSED: ${name}"
   else
     echo '--------------------------------------------'
     echo expected
@@ -33,15 +22,20 @@ assert_equals()
     echo actual
     echo "${actual}"
     echo '--------------------------------------------'
-    echo 'FAILED: assert_equals()'
+    echo "FAILED: ${name}"
     exit 42
   fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-dockerfile_augmenter()
+augmented()
 {
-  cat "./docker/Dockerfile.base" \
+  # Augments one fixture's Dockerfile.base, the way image_builder does.
+  # The socket is mounted because the augmenter runs the FROM image to read
+  # its /etc/issue.
+  local -r fixture="${1}"
+
+  cat "${FIXTURES_DIR}/${fixture}/Dockerfile.base" \
     | \
       docker run \
         --interactive \
@@ -51,30 +45,20 @@ dockerfile_augmenter()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-check_base_language_repo()
+check_fixture()
 {
-  echo Checking python
-  cd ${TMP_DIR}
-  git clone https://github.com/cyber-dojo-languages/python.git
-  cd python
-  local -r expected=$(cat "${MY_DIR}/expected.python.Dockerfile.augmented")
-  local -r actual=$(dockerfile_augmenter)
-  assert_equals "${expected}" "${actual}"
-}
+  # Each fixture holds the Dockerfile.base going in and the augmented
+  # Dockerfile expected out. Both are committed here, so the test says the
+  # same thing tomorrow as today.
+  local -r fixture="${1}"
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-check_test_framework_repo()
-{
-  echo Checking python-pytest
-  cd ${TMP_DIR}
-  git clone https://github.com/cyber-dojo-languages/python-pytest.git
-  cd python-pytest
-  local -r expected=$(cat "${MY_DIR}/expected.python-pytest.Dockerfile.augmented")
-  local -r actual=$(dockerfile_augmenter)
-  assert_equals "${expected}" "${actual}"
+  echo "Checking ${fixture}"
+  local -r expected=$(cat "${FIXTURES_DIR}/${fixture}/expected.Dockerfile.augmented")
+  local -r actual=$(augmented "${fixture}")
+  assert_equals "${fixture}" "${expected}" "${actual}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-check_base_language_repo
-check_test_framework_repo
+check_fixture from-upstream-image
+check_fixture from-cyber-dojo-image

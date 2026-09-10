@@ -1,0 +1,4 @@
+FROM python:slim-bookworm
+LABEL maintainer=jon@jaggersoft.com
+
+RUN pip3 install --upgrade pip

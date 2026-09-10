@@ -20,9 +20,11 @@ docker build \
   --tag $(image_name) \
   "${MY_DIR}/.."
 
+# Loads a single-platform image into the local docker store, which is what
+# bin/test_image.sh runs. There is no --platform, so it is built for the
+# machine doing the build and runs there natively.
 docker build \
   --builder container-builder \
   --load \
-  --platform linux/amd64 \
   --tag "$(image_name)" \
   "${MY_DIR}/.."

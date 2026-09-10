@@ -1,0 +1,4 @@
+FROM ghcr.io/cyber-dojo-languages/python:191902b
+LABEL maintainer=jon@jaggersoft.com
+
+RUN pip3 install --upgrade pytest
